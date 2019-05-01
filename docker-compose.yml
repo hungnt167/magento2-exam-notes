@@ -1,0 +1,31 @@
+version: '3.6'
+services:
+  web:
+    image: alexcheng/magento2:2.2
+    container_name: magento227
+    ports:
+      - "8227:80"
+    links:
+      - db
+    env_file:
+      - env
+    volumes:
+      - ./magento/app/code:/var/www/html/app/code
+      - ./magento/var/log:/var/www/html/var/log
+    restart: always
+  db:
+    image: mysql:5.6.23
+    volumes:
+      - db-data:/var/lib/mysql/data
+    env_file:
+      - env
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "3227:80"
+    links:
+      - db
+    restart: always
+volumes:
+  db-data:
